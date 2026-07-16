@@ -1,0 +1,534 @@
+---
+title: "Workshop 1-Into the programing"
+author: "Agustinus Satrio Supoyo"
+date: "2026-05-20"
+output:
+  html_document: default
+  pdf_document: default
+---
+## Introduction
+
+This workshop introduced the fundamental skills needed to begin programming in R. I learned how to navigate RStudio, write and run scripts, create objects, use functions, understand data types, and organise files within an R Project.
+
+These foundations are important for marine science because modern datasets—such as coral surveys, satellite observations, acoustic records, and animal tracking data—require clear, reproducible, and well-organised analytical workflows.
+
+### Working Directory
+
+```{r working-directory}
+getwd()
+```
+
+### Topics Covered
+
+- Basic calculations
+- Comments and code style
+- Objects and assignment
+- Object naming rules
+- Functions and arguments
+- Creating text with `paste()`
+- Debugging
+- Data types
+- Vectors and lists
+- Data frames
+- Missing data
+- Tibbles
+- Packages
+- R Projects and file organisation
+
+## 1. Basic Calculations
+
+R can be used as a calculator.
+
+```{r basic-calculations}
+24.5 + 1.2
+32.0 / 4
+2 + 1
+6 * 2
+```
+
+The `*` symbol represents multiplication.
+
+The colon operator `:` creates a sequence of numbers.
+
+```{r number-sequence}
+1:30
+```
+
+Numbers such as `[1]`, `[9]`, or `[17]` in the Console indicate the index of the first value displayed on each line.
+
+## 2. Comments and Code Style
+
+Comments begin with the `#` symbol. R ignores text written after `#`.
+
+```{r comments-and-style}
+# Calculate the total area surveyed
+
+quadrat_area_m2 <- 0.25
+number_of_quadrats <- 16
+
+total_area_surveyed <-
+  quadrat_area_m2 * number_of_quadrats
+
+total_area_surveyed
+```
+
+Comments can be used to explain code, organise scripts, and record useful notes.
+
+## 3. Objects and Assignment
+
+The assignment operator `<-` stores information inside an object.
+
+```{r objects-and-assignment}
+coral_count <- 42
+
+fish_lengths <- c(
+  124,
+  152,
+  98,
+  221,
+  146
+)
+
+coral_count
+fish_lengths
+```
+
+Objects can be used in calculations.
+
+```{r manipulating-objects}
+coral_count + 1
+coral_count + coral_count
+```
+
+R is case-sensitive.
+
+```{r case-sensitivity}
+coral_count <- 42
+Coral_Count <- 1
+
+coral_count
+Coral_Count
+
+coral_count + Coral_Count
+```
+
+## 4. Object Naming Rules
+
+Object names should be clear, descriptive, and consistent.
+
+```{r valid-object-names}
+age_in_years <- 25
+transect_depth_m <- 12.5
+bleaching_present <- TRUE
+```
+
+Object names cannot normally begin with a number, contain spaces, or begin with unsupported special symbols.
+
+The following examples are displayed but not run.
+
+```{r invalid-object-names, eval=FALSE}
+01_age <- 25
+!_age <- 25
+coral count <- 25
+```
+
+Spaces can technically be used with backticks.
+
+```{r backtick-object-name}
+`coral count` <- 25
+
+`coral count`
+```
+
+However, underscores are usually clearer.
+
+```{r recommended-object-name}
+coral_count <- 25
+```
+
+## 5. Functions and Arguments
+
+Functions perform specific operations in R.
+
+### Rounding Numbers
+
+```{r rounding-functions}
+years_old <- 25.7
+
+round(years_old)
+floor(years_old)
+```
+
+The second argument of `round()` controls the number of decimal places.
+
+```{r rounding-decimal-places}
+years_old <- 25.765
+
+round(years_old, 2)
+round(years_old, 1)
+```
+
+Function help and arguments can be viewed using:
+
+```{r function-help, eval=FALSE}
+?round
+args(round)
+```
+
+## 6. Using `paste()` to Create Sentences
+
+The `paste()` function combines text and object values.
+
+```{r paste-sentence}
+years_old <- 25.765
+rounded_age <- round(years_old, 2)
+
+sentence <- paste(
+  "Average colony age is",
+  rounded_age,
+  "years old."
+)
+
+print(sentence)
+```
+
+The value can also be rounded to one decimal place.
+
+```{r paste-one-decimal}
+rounded_age <- round(years_old, 1)
+
+paste(
+  "Average colony age is",
+  rounded_age,
+  "years old."
+)
+```
+
+## 7. Debugging
+
+Debugging is the process of identifying and correcting errors in code.
+
+The following example contains a spelling error and is not run during knitting.
+
+```{r debugging-error, eval=FALSE}
+quadrat_area_m2 <- 0.25
+number_of_quadrats <- 16
+
+total_area_surveyed <-
+  quadrat_area_m2 * number_of_quadrats
+
+print(total_area_surveyd)
+```
+
+The corrected version is:
+
+```{r debugging-corrected}
+quadrat_area_m2 <- 0.25
+number_of_quadrats <- 16
+
+total_area_surveyed <-
+  quadrat_area_m2 * number_of_quadrats
+
+print(total_area_surveyed)
+```
+
+Incomplete or incorrect syntax can also produce errors.
+
+```{r syntax-errors, eval=FALSE}
+6 *
+
+6 % 2
+```
+
+The correct multiplication command is:
+
+```{r correct-syntax}
+6 * 2
+```
+
+## 8. Data Types
+
+R uses different data types to determine which operations can be performed.
+
+### Character
+
+```{r character-data}
+site_name <- "Heron_Island"
+
+class(site_name)
+str(site_name)
+```
+
+### Numeric
+
+```{r numeric-data}
+transect_depth_m <- 12.5
+
+class(transect_depth_m)
+str(transect_depth_m)
+```
+
+### Integer
+
+```{r integer-data}
+turtle_count <- 5L
+
+class(turtle_count)
+str(turtle_count)
+```
+
+### Logical
+
+```{r logical-data}
+bleaching_present <- TRUE
+
+class(bleaching_present)
+str(bleaching_present)
+```
+
+## 9. Vectors and Lists
+
+A vector stores multiple values of the same data type.
+
+### Numeric Vector
+
+```{r numeric-vector}
+fish_lengths <- c(
+  124,
+  152,
+  98,
+  221,
+  146
+)
+
+fish_lengths
+class(fish_lengths)
+length(fish_lengths)
+```
+
+### Character Vector
+
+```{r character-vector}
+coral_species <- c(
+  "Porites",
+  "Acropora",
+  "Montastrea"
+)
+
+coral_species
+class(coral_species)
+```
+
+### Mixed Values in a Vector
+
+Atomic vectors can only contain one data type. R converts all values to a common type.
+
+```{r vector-coercion}
+notes_vector <- c(
+  "Acropora",
+  27.5,
+  TRUE
+)
+
+notes_vector
+class(notes_vector)
+```
+
+### Lists
+
+A list can store several different data types.
+
+```{r mixed-list}
+notes_list <- list(
+  "Acropora",
+  27.5,
+  TRUE
+)
+
+notes_list
+class(notes_list)
+```
+
+Individual list elements can be accessed using double square brackets.
+
+```{r access-list-elements}
+notes_list[[1]]
+notes_list[[2]]
+notes_list[[3]]
+```
+
+## 10. Data Frames
+
+A data frame stores rectangular data in rows and columns.
+
+```{r create-data-frame}
+my_dataframe <- data.frame(
+  no = c(1, 2, 3),
+  species = c(
+    "Plectropomus",
+    "Scarus",
+    "Pomacentrus"
+  ),
+  recorded = c(
+    TRUE,
+    FALSE,
+    TRUE
+  )
+)
+
+my_dataframe
+```
+
+The `str()` function displays the structure of the data frame.
+
+```{r inspect-data-frame}
+str(my_dataframe)
+```
+
+A column can be converted to a factor when it represents categorical data.
+
+```{r convert-column-to-factor}
+my_dataframe$no <- as.factor(
+  my_dataframe$no
+)
+
+str(my_dataframe)
+```
+
+## 11. Missing Data
+
+The value `NA` represents missing or unavailable data.
+
+```{r create-missing-data}
+coral_height_cm <- c(
+  170,
+  NA,
+  180
+)
+
+coral_height_cm
+```
+
+The `is.na()` function identifies missing values.
+
+```{r check-missing-data}
+is.na(coral_height_cm)
+```
+
+The `na.omit()` function removes missing values.
+
+```{r remove-missing-data}
+na.omit(coral_height_cm)
+```
+
+## 12. Tibbles
+
+A tibble is a modern version of a data frame used extensively in the tidyverse.
+
+### Load the `tibble` Package
+
+```{r load-tibble}
+library(tibble)
+```
+
+### Create a Tibble
+
+```{r create-tibble}
+my_tibble <- tibble(
+  no = c(1, 2, 3),
+  species = c(
+    "Plectropomus",
+    "Scarus",
+    "Pomacentrus"
+  ),
+  recorded = c(
+    TRUE,
+    FALSE,
+    TRUE
+  )
+)
+
+my_tibble
+```
+
+## 13. Installing and Loading Packages
+
+Packages contain functions created by other programmers and researchers.
+
+Packages should normally be installed once through the Console.
+
+```{r install-package, eval=FALSE}
+install.packages("tidyverse")
+```
+
+Packages must be loaded during each new R session.
+
+```{r load-package, eval=FALSE}
+library(tidyverse)
+```
+
+Individual packages can also be loaded separately.
+
+```{r load-individual-packages, eval=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+Multiple packages can be installed together.
+
+```{r install-multiple-packages, eval=FALSE}
+install.packages(
+  c(
+    "ggplot2",
+    "tidyr",
+    "dplyr",
+    "terra"
+  )
+)
+```
+
+## 14. R Projects and File Organisation
+
+The `getwd()` function displays the current working directory.
+
+```{project-working-directory}
+getwd()
+```
+
+R Projects provide a reliable way to organise files and use relative file paths.
+
+Hardcoded working directories should be avoided.
+
+```{r avoid-setwd, eval=FALSE}
+setwd(
+  "C:/Users/Name/Desktop/MyDocuments/Class2026/Data"
+)
+```
+
+A recommended project structure is:
+
+```text
+MB5370_Module_1_Coding/
+│
+├── MB5370_Module_1_Coding.Rproj
+├── data/
+├── code/
+├── output/
+└── docs/
+```
+
+The folders can be created using:
+
+```{r create-project-folders, eval=FALSE}
+dir.create("data")
+dir.create("code")
+dir.create("output")
+dir.create("docs")
+```
+
+The folders are used for:
+
+- `data/`: raw and unedited data
+- `code/`: R scripts and data-processing code
+- `output/`: figures, tables, and processed files
+- `docs/`: rendered reports and final documents
