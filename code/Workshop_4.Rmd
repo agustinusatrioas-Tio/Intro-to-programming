@@ -11,31 +11,23 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-#
 ## Exercise: AI-Driven Data Visualisation Challenge
 
-In this exercise, you will revisit the data visualisation skills introduced in Workshop 2. Instead of writing all code manually, you will use inline comments to guide GitHub Copilot.
+In this exercise, you will revisit the data visualisation skills introduced in Workshop 2. Instead of writing all the code manually, you will use inline comments to guide GitHub Copilot.
 
 The exercise uses the `palmerpenguins` dataset, which contains biological and environmental measurements for three penguin species from the Palmer Archipelago in Antarctica.
 
+### 1. Load Required Packages
 
-# ------------------------------------------------------------
-# 1. Load Required Packages
-# ------------------------------------------------------------
-
-
-```{r}
+```{r packages, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(palmerpenguins)
 library(purrr)
 ```
 
-# ------------------------------------------------------------
-# 2. Data Visualisation with ggplot2
-# ------------------------------------------------------------
+### 2. Data Visualisation with ggplot2
 
-# Scatter plot of penguin bill length and bill depth
-
+#### Scatter Plot of Penguin Bill Length and Bill Depth
 
 ```{r}
 ggplot(
@@ -59,8 +51,10 @@ ggplot(
   )
 ```
 
-# Scatter plot of body mass and flipper length
-# A separate linear regression line is fitted for each species
+#### Scatter Plot of Body Mass and Flipper Length
+
+A separate linear regression line is fitted for each penguin species.
+
 ```{r}
 ggplot(
   data = penguins,
@@ -89,23 +83,31 @@ ggplot(
 
 ```
 
-# ------------------------------------------------------------
-# 3. Optional AI Packages
-# ------------------------------------------------------------
+### 3. Optional AI Packages
 
-# Run these installation commands only once if needed
-# install.packages("ellmer")
-# install.packages("chattr")
+Run the following installation commands only once, if the packages are not already installed.
 
-# Launch the chattr application
-# chattr::chattr_app()
+```{r install-ai-packages, eval=FALSE}
+install.packages("ellmer")
+install.packages("chattr")
+```
 
+Launch the `chattr` application using:
 
-# ------------------------------------------------------------
-# 4. Conditional Statements
-# ------------------------------------------------------------
+```{r launch-chattr, eval=FALSE}
+chattr::chattr_app()
+```
 
-# Example: checking sea surface temperature
+### 4. Conditional Statements
+
+#### Example: Checking Sea Surface Temperature
+
+```{r sea-surface-temperature}
+
+# Create a conditional statement to check sea surface temperature
+
+```
+
 ```{r}
 sst <- 30.2
 
@@ -116,20 +118,19 @@ if (sst > 29.5) {
 }
 ```
 
-# ------------------------------------------------------------
-# 5. Vectorised Conditional Functions
-# ------------------------------------------------------------
+### 5. Vectorised Conditional Functions
 
-# Sample coral monitoring data
-```{r}
+#### Sample Coral Monitoring Data
+
+```{r coral-monitoring-data}
 coral_monitoring <- tibble(
   site = c("Site_A", "Site_B", "Site_C"),
   depth_m = c(12, 35, 8)
 )
 ```
 
+#### Classify Reef Depth Using `if_else()`
 
-# Classify reef depth using if_else()
 ```{r}
 coral_monitoring <- coral_monitoring %>%
   mutate(
@@ -142,7 +143,8 @@ coral_monitoring <- coral_monitoring %>%
 
 ```
 
-# Classify reef depth using case_when()
+#### Classify Reef Depth Using `case_when()`
+
 ```{r}
 coral_monitoring <- coral_monitoring %>%
   mutate(
@@ -157,10 +159,7 @@ coral_monitoring <- coral_monitoring %>%
 coral_monitoring
 ```
 
-
-# ------------------------------------------------------------
-# 6. Salinity Classification
-# ------------------------------------------------------------
+### 6. Salinity Classification
 
 ```{r}
 marine_stations <- tibble(
@@ -182,12 +181,11 @@ marine_stations
 
 ```
 
-# ------------------------------------------------------------
-# 7. Basic for-loops
-# ------------------------------------------------------------
+### 7. Basic `for` Loops
 
-# Process climate data for multiple years
-```{r}
+#### Process Climate Data for Multiple Years
+
+```{r process-climate-years}
 for (year in 2020:2024) {
   print(
     paste(
@@ -198,8 +196,9 @@ for (year in 2020:2024) {
 }
 ```
 
-# Print transect length information
-```{r}
+#### Print Transect Length Information
+
+```{r print-transect-lengths}
 transect_lengths <- c(50, 100, 25, 75)
 
 for (i in seq_along(transect_lengths)) {
@@ -216,12 +215,10 @@ for (i in seq_along(transect_lengths)) {
 
 ```
 
-# ------------------------------------------------------------
-# 8. Saving Loop Results
-# ------------------------------------------------------------
+### 8. Saving Loop Results
 
-# Calculate square roots using a for-loop
-```{r}
+#### Calculate Square Roots Using a `for` Loop
+```{r calculate-square-roots-loop}
 site_areas <- c(144, 400, 625)
 
 square_root_results <- numeric(length(site_areas))
@@ -233,8 +230,8 @@ for (i in seq_along(site_areas)) {
 square_root_results
 ```
 
+#### Calculate Square Roots Using `purrr::map_dbl()`
 
-# Calculate square roots using purrr::map_dbl()
 ```{r}
 mapped_results <- map_dbl(
   site_areas,
@@ -244,11 +241,10 @@ mapped_results <- map_dbl(
 mapped_results
 ```
 
-# ------------------------------------------------------------
-# 9. Iteration over Data Groups
-# ------------------------------------------------------------
+### 9. Iteration Over Data Groups
 
-# Split the iris dataset by species and summarise each group
+#### Split the `iris` Dataset by Species and Summarise Each Group
+
 ```{r}
 iris_summaries <- iris %>%
   split(.$Species) %>%
@@ -257,9 +253,9 @@ iris_summaries <- iris %>%
 iris_summaries
 ```
 
-# ------------------------------------------------------------
-# 10. Comparing a for-loop with purrr
-# ------------------------------------------------------------
+### 10. Comparing a `for` Loop with `purrr`
+
+#### Create Fish Count Data
 
 ```{r}
 fish_counts <- list(
@@ -269,7 +265,9 @@ fish_counts <- list(
 )
 ```
 
-# Calculate mean fish counts using a for-loop
+#### Calculate Mean Fish Counts Using a `for` Loop
+
+
 ```{r}
 mean_counts_for <- numeric(length(fish_counts))
 
@@ -281,7 +279,8 @@ mean_counts_for
 
 ```
 
-# Calculate mean fish counts using purrr::map_dbl()
+#### Calculate Mean Fish Counts Using `purrr::map_dbl()`
+
 ```{r}
 mean_counts_purrr <- map_dbl(
   fish_counts,
@@ -291,9 +290,10 @@ mean_counts_purrr <- map_dbl(
 mean_counts_purrr
 ```
 
-# ------------------------------------------------------------
-# 11. Custom Function: Coral Mortality
-# ------------------------------------------------------------
+### 11. Custom Function: Coral Mortality
+
+#### Create the Coral Mortality Function
+
 ```{r}
 calculate_coral_mortality <- function(
     initial_count,
@@ -323,8 +323,8 @@ calculate_coral_mortality <- function(
 }
 ```
 
+#### Test the Coral Mortality Function
 
-# Test the coral mortality function
 ```{r}
 coral_mortality_result <- calculate_coral_mortality(
   initial_count = 120,
@@ -334,10 +334,10 @@ coral_mortality_result <- calculate_coral_mortality(
 coral_mortality_result
 ```
 
-# ------------------------------------------------------------
-# 12. Student Exercise 4
-# Convert Celsius to Fahrenheit
-# ------------------------------------------------------------
+
+### 12. Student Exercise 4: Convert Celsius to Fahrenheit
+
+#### Create the Temperature Conversion Function
 
 ```{r}
 convert_temp_c_to_f <- function(celsius) {
@@ -367,7 +367,8 @@ convert_temp_c_to_f <- function(celsius) {
 ```
 
 
-# Test with a valid temperature
+#### Test with a Valid Temperature
+
 ```{r}
 valid_temperature <- convert_temp_c_to_f(
   celsius = 25
@@ -377,8 +378,10 @@ valid_temperature
 
 ```
 
-# Test with an invalid temperature
-# tryCatch() allows the script to continue after the error
+#### Test with an Invalid Temperature
+
+The `tryCatch()` function allows the script to continue running after an error occurs.
+
 ```{r}
 invalid_temperature_test <- tryCatch(
   {
@@ -393,11 +396,9 @@ invalid_temperature_test <- tryCatch(
 
 ```
 
+### 13. Advanced Challenge 1: Nested Multi-Vector Iteration
 
-# ------------------------------------------------------------
-# 13. Advanced Challenge 1
-# Nested Multi-Vector Iteration
-# ------------------------------------------------------------
+#### Create Count and Scaling-Factor Vectors
 
 ```{r}
 counts <- c(15, 24, 8, 42)
@@ -406,8 +407,8 @@ scaling_factors <- c(1.2, 0.8, 2.5, 1.1)
 
 ```
 
+#### Multiply Each Count by Its Matching Scaling Factor
 
-# Multiply each count by its matching scaling factor
 ```{r}
 scaled_abundance <- map2_dbl(
   counts,
@@ -418,10 +419,9 @@ scaled_abundance <- map2_dbl(
 scaled_abundance
 ```
 
-# ------------------------------------------------------------
-# 14. Advanced Challenge 2
-# Robust Data-Wrangling Pipeline Function
-# ------------------------------------------------------------
+### 14. Advanced Challenge 2: Robust Data-Wrangling Pipeline Function
+
+#### Create the Data-Wrangling Function
 
 ```{r}
 clean_and_classify_survey <- function(
@@ -496,13 +496,9 @@ clean_and_classify_survey <- function(
   
   return(cleaned_data)
 }
-
-
 ```
 
-# ------------------------------------------------------------
-# 15. Create Mock Survey Data
-# ------------------------------------------------------------
+### 15. Create Mock Survey Data
 
 ```{r}
 survey_data <- tibble(
@@ -523,12 +519,11 @@ survey_data <- tibble(
 )
 
 survey_data
-
 ```
-# ------------------------------------------------------------
-# 16. Test the Data-Wrangling Function
-# ------------------------------------------------------------
 
+### 16. Test the Data-Wrangling Function
+
+```{r test-data-wrangling-function}
 cleaned_survey <- clean_and_classify_survey(
   data = survey_data,
   column_name = "coral_cover",
@@ -536,12 +531,4 @@ cleaned_survey <- clean_and_classify_survey(
 )
 
 cleaned_survey
-
-
-
-
-
-
-
-
-
+```
