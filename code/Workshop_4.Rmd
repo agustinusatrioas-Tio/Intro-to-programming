@@ -1,6 +1,6 @@
 ---
 title: "Workshop 4"
-author: "Tio"
+author: "Agustinus Satrio Supoyo"
 date: "2026-06-03"
 output: html_document
 ---
