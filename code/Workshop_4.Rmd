@@ -1,0 +1,547 @@
+---
+title: "Workshop 4"
+author: "Tio"
+date: "2026-06-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+#
+## Exercise: AI-Driven Data Visualisation Challenge
+
+In this exercise, you will revisit the data visualisation skills introduced in Workshop 2. Instead of writing all code manually, you will use inline comments to guide GitHub Copilot.
+
+The exercise uses the `palmerpenguins` dataset, which contains biological and environmental measurements for three penguin species from the Palmer Archipelago in Antarctica.
+
+
+# ------------------------------------------------------------
+# 1. Load Required Packages
+# ------------------------------------------------------------
+
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+library(purrr)
+```
+
+# ------------------------------------------------------------
+# 2. Data Visualisation with ggplot2
+# ------------------------------------------------------------
+
+# Scatter plot of penguin bill length and bill depth
+
+
+```{r}
+ggplot(
+  data = penguins,
+  mapping = aes(
+    x = bill_length_mm,
+    y = bill_depth_mm,
+    colour = species
+  )
+) +
+  geom_point(
+    size = 3,
+    na.rm = TRUE
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Bill Length vs Bill Depth of Penguins",
+    x = "Bill Length (mm)",
+    y = "Bill Depth (mm)",
+    colour = "Species"
+  )
+```
+
+# Scatter plot of body mass and flipper length
+# A separate linear regression line is fitted for each species
+```{r}
+ggplot(
+  data = penguins,
+  mapping = aes(
+    x = flipper_length_mm,
+    y = body_mass_g,
+    colour = species
+  )
+) +
+  geom_point(
+    size = 3,
+    na.rm = TRUE
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    na.rm = TRUE
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Body Mass vs Flipper Length of Penguins",
+    x = "Flipper Length (mm)",
+    y = "Body Mass (g)",
+    colour = "Species"
+  )
+
+```
+
+# ------------------------------------------------------------
+# 3. Optional AI Packages
+# ------------------------------------------------------------
+
+# Run these installation commands only once if needed
+# install.packages("ellmer")
+# install.packages("chattr")
+
+# Launch the chattr application
+# chattr::chattr_app()
+
+
+# ------------------------------------------------------------
+# 4. Conditional Statements
+# ------------------------------------------------------------
+
+# Example: checking sea surface temperature
+```{r}
+sst <- 30.2
+
+if (sst > 29.5) {
+  print("Warning: Marine heatwave threshold exceeded!")
+} else {
+  print("SST remains within baseline parameters.")
+}
+```
+
+# ------------------------------------------------------------
+# 5. Vectorised Conditional Functions
+# ------------------------------------------------------------
+
+# Sample coral monitoring data
+```{r}
+coral_monitoring <- tibble(
+  site = c("Site_A", "Site_B", "Site_C"),
+  depth_m = c(12, 35, 8)
+)
+```
+
+
+# Classify reef depth using if_else()
+```{r}
+coral_monitoring <- coral_monitoring %>%
+  mutate(
+    zone = if_else(
+      depth_m > 30,
+      "Deep Reef",
+      "Shallow Reef"
+    )
+  )
+
+```
+
+# Classify reef depth using case_when()
+```{r}
+coral_monitoring <- coral_monitoring %>%
+  mutate(
+    reef_category = case_when(
+      depth_m < 10 ~ "Lagoon / Flats",
+      depth_m <= 30 ~ "Crest / Slope",
+      depth_m > 30 ~ "Mesophotic / Deep",
+      TRUE ~ "Unclassified"
+    )
+  )
+
+coral_monitoring
+```
+
+
+# ------------------------------------------------------------
+# 6. Salinity Classification
+# ------------------------------------------------------------
+
+```{r}
+marine_stations <- tibble(
+  salinity = c(35, 28, 32, 12)
+)
+
+marine_stations <- marine_stations %>%
+  mutate(
+    environment_type = case_when(
+      salinity < 15 ~ "Estuarine",
+      salinity >= 15 & salinity <= 30 ~ "Brackish",
+      salinity > 30 ~ "Marine",
+      TRUE ~ "Unclassified"
+    )
+  )
+
+marine_stations
+
+
+```
+
+# ------------------------------------------------------------
+# 7. Basic for-loops
+# ------------------------------------------------------------
+
+# Process climate data for multiple years
+```{r}
+for (year in 2020:2024) {
+  print(
+    paste(
+      "Processing climate data for year:",
+      year
+    )
+  )
+}
+```
+
+# Print transect length information
+```{r}
+transect_lengths <- c(50, 100, 25, 75)
+
+for (i in seq_along(transect_lengths)) {
+  print(
+    paste(
+      "Transect number",
+      i,
+      "measures",
+      transect_lengths[i],
+      "metres."
+    )
+  )
+}
+
+```
+
+# ------------------------------------------------------------
+# 8. Saving Loop Results
+# ------------------------------------------------------------
+
+# Calculate square roots using a for-loop
+```{r}
+site_areas <- c(144, 400, 625)
+
+square_root_results <- numeric(length(site_areas))
+
+for (i in seq_along(site_areas)) {
+  square_root_results[i] <- sqrt(site_areas[i])
+}
+
+square_root_results
+```
+
+
+# Calculate square roots using purrr::map_dbl()
+```{r}
+mapped_results <- map_dbl(
+  site_areas,
+  sqrt
+)
+
+mapped_results
+```
+
+# ------------------------------------------------------------
+# 9. Iteration over Data Groups
+# ------------------------------------------------------------
+
+# Split the iris dataset by species and summarise each group
+```{r}
+iris_summaries <- iris %>%
+  split(.$Species) %>%
+  map(summary)
+
+iris_summaries
+```
+
+# ------------------------------------------------------------
+# 10. Comparing a for-loop with purrr
+# ------------------------------------------------------------
+
+```{r}
+fish_counts <- list(
+  c(10, 12, 15, 11),
+  c(8, 9, 7, 10, 12),
+  c(5, 6, 4)
+)
+```
+
+# Calculate mean fish counts using a for-loop
+```{r}
+mean_counts_for <- numeric(length(fish_counts))
+
+for (i in seq_along(fish_counts)) {
+  mean_counts_for[i] <- mean(fish_counts[[i]])
+}
+
+mean_counts_for
+
+```
+
+# Calculate mean fish counts using purrr::map_dbl()
+```{r}
+mean_counts_purrr <- map_dbl(
+  fish_counts,
+  mean
+)
+
+mean_counts_purrr
+```
+
+# ------------------------------------------------------------
+# 11. Custom Function: Coral Mortality
+# ------------------------------------------------------------
+```{r}
+calculate_coral_mortality <- function(
+    initial_count,
+    surviving_count
+) {
+  
+  # Check that the initial count is greater than zero
+  if (initial_count <= 0) {
+    stop("Initial count must be greater than zero.")
+  }
+  
+  # Check that surviving count is not negative
+  if (surviving_count < 0) {
+    stop("Surviving count cannot be negative.")
+  }
+  
+  # Check that surviving count does not exceed initial count
+  if (surviving_count > initial_count) {
+    stop("Surviving count cannot exceed initial count.")
+  }
+  
+  mortality_rate <- (
+    initial_count - surviving_count
+  ) / initial_count
+  
+  return(mortality_rate)
+}
+```
+
+
+# Test the coral mortality function
+```{r}
+coral_mortality_result <- calculate_coral_mortality(
+  initial_count = 120,
+  surviving_count = 84
+)
+
+coral_mortality_result
+```
+
+# ------------------------------------------------------------
+# 12. Student Exercise 4
+# Convert Celsius to Fahrenheit
+# ------------------------------------------------------------
+
+```{r}
+convert_temp_c_to_f <- function(celsius) {
+  
+  # Check that the input is a single numeric value
+  if (
+    !is.numeric(celsius) ||
+    length(celsius) != 1 ||
+    is.na(celsius)
+  ) {
+    stop("Celsius must be a single non-missing numeric value.")
+  }
+  
+  # Stop if the temperature is below absolute zero
+  if (celsius < -273.15) {
+    stop(
+      "Temperature cannot be below absolute zero (-273.15°C)."
+    )
+  }
+  
+  fahrenheit <- (celsius * 9 / 5) + 32
+  
+  return(fahrenheit)
+}
+
+
+```
+
+
+# Test with a valid temperature
+```{r}
+valid_temperature <- convert_temp_c_to_f(
+  celsius = 25
+)
+
+valid_temperature
+
+```
+
+# Test with an invalid temperature
+# tryCatch() allows the script to continue after the error
+```{r}
+invalid_temperature_test <- tryCatch(
+  {
+    convert_temp_c_to_f(
+      celsius = -300
+    )
+  },
+  error = function(error_message) {
+    print(error_message$message)
+  }
+)
+
+```
+
+
+# ------------------------------------------------------------
+# 13. Advanced Challenge 1
+# Nested Multi-Vector Iteration
+# ------------------------------------------------------------
+
+```{r}
+counts <- c(15, 24, 8, 42)
+
+scaling_factors <- c(1.2, 0.8, 2.5, 1.1)
+
+```
+
+
+# Multiply each count by its matching scaling factor
+```{r}
+scaled_abundance <- map2_dbl(
+  counts,
+  scaling_factors,
+  ~ .x * .y
+)
+
+scaled_abundance
+```
+
+# ------------------------------------------------------------
+# 14. Advanced Challenge 2
+# Robust Data-Wrangling Pipeline Function
+# ------------------------------------------------------------
+
+```{r}
+clean_and_classify_survey <- function(
+    data,
+    column_name,
+    threshold
+) {
+  
+  # Check that data is a data frame or tibble
+  if (!is.data.frame(data)) {
+    stop(
+      "The 'data' argument must be a data frame or tibble."
+    )
+  }
+  
+  # Check that the column name is a single character string
+  if (
+    !is.character(column_name) ||
+    length(column_name) != 1 ||
+    is.na(column_name)
+  ) {
+    stop(
+      "The column name must be provided as a single character string."
+    )
+  }
+  
+  # Check that the specified column exists
+  if (!column_name %in% names(data)) {
+    stop(
+      paste0(
+        "Column '",
+        column_name,
+        "' was not found in the supplied data frame."
+      )
+    )
+  }
+  
+  # Check that the selected column is numeric
+  if (!is.numeric(data[[column_name]])) {
+    stop(
+      paste0(
+        "Column '",
+        column_name,
+        "' must contain numeric values."
+      )
+    )
+  }
+  
+  # Check that the threshold is a valid numeric value
+  if (
+    !is.numeric(threshold) ||
+    length(threshold) != 1 ||
+    is.na(threshold)
+  ) {
+    stop(
+      "The threshold must be a single non-missing numeric value."
+    )
+  }
+  
+  # Remove missing values and classify each observation
+  cleaned_data <- data %>%
+    filter(
+      !is.na(.data[[column_name]])
+    ) %>%
+    mutate(
+      classification = if_else(
+        .data[[column_name]] >= threshold,
+        "Above threshold",
+        "Below threshold"
+      )
+    )
+  
+  return(cleaned_data)
+}
+
+
+```
+
+# ------------------------------------------------------------
+# 15. Create Mock Survey Data
+# ------------------------------------------------------------
+
+```{r}
+survey_data <- tibble(
+  site = c(
+    "Site_A",
+    "Site_B",
+    "Site_C",
+    "Site_D",
+    "Site_E"
+  ),
+  coral_cover = c(
+    42,
+    NA,
+    18,
+    65,
+    30
+  )
+)
+
+survey_data
+
+```
+# ------------------------------------------------------------
+# 16. Test the Data-Wrangling Function
+# ------------------------------------------------------------
+
+cleaned_survey <- clean_and_classify_survey(
+  data = survey_data,
+  column_name = "coral_cover",
+  threshold = 30
+)
+
+cleaned_survey
+
+
+
+
+
+
+
+
+
