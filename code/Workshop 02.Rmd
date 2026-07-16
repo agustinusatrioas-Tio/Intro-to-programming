@@ -1,0 +1,314 @@
+---
+title: "Workshop 02"
+author: "Agustinus Satrio Supoyo"
+date: "2026-07-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Load Packages 
+```{r packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+```
+##ggplot
+
+#| Geom               | Purpose      |
+#| `geom_point()`     | Scatter plot |
+#| `geom_line()`      | Line chart   |
+#| `geom_bar()`       | Bar chart    |
+#| `geom_boxplot()`   | Boxplot      |
+#| `geom_histogram()` | Histogram    |
+#| `geom_smooth()`    | Trend line   |
+
+
+```{r}
+mpg
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+#Aesthetic mappings
+aes() #used to connect variable to visual element
+Visual elements include:
+- `colour`
+- `size`
+- `shape`
+- `alpha`
+- `linetype`
+- `group`
+
+
+### Change Colour Based on Class
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, colour = class))
+```
+
+### Set a Fixed Colour
+```{r}
+ggplot(data=mpg)+
+  geom_point(mapping=aes(x=displ,y=hwy),colour="blue")
+```
+
+
+### Change Point Size by Class
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, size = class))
+```
+
+### Change Point Shape by Class
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+```
+
+### Change Transparency
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
+```
+
+### Colour Based on a Logical Condition
+```{r}
+ggplot(data = mpg) +
+  geom_point( mapping = aes( x = displ,y = hwy,colour = displ < 5))
+```
+
+##Troubleshooting
+```{r}
+ggplot(data = mpg)+ 
+ geom_point(mapping = aes(x = displ, y = hwy)) 
+# the + should be on top line
+```
+
+```{r}
+ggplot(data = mpg)+
+ geom_point(mapping = aes(x = displ, y = hwy)) 
+```
+
+##Faceting (Panel Plot)
+Faceting divides a plot into several smaller panels.
+
+### facet_wrap()
+```{r}
+ggplot(data = mpg) +
+  geom_point(aes(x = displ, y = hwy)) +
+  facet_wrap(~ class, nrow = 2)
+```
+
+### facet_grid()
+```{r}
+#Face grid
+ggplot(data = mpg) +
+  geom_point(aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ cyl)
+```
+
+## Smooth Line
+### Add a Smooth Line
+```{r}
+ggplot(data=mpg)+
+  geom_smooth(mapping=aes(x=displ,y=hwy))
+```
+
+### Combine Points and Smooth Line
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + # points horrible 
+  geom_smooth(mapping = aes(x = displ, y = hwy)) # try smooth line
+```
+
+### Change Line Type by Drive Type
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))
+```
+
+### Group Data by Drive Type
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, group = drv))
+```
+
+### Change Line Colour by Group
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, colour = drv),
+    show.legend = FALSE
+  )
+```
+
+##Combining Multiple Geoms
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+##Using Global Mappings
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth() #to avoid repeating the same aes()
+
+```
+
+## Layer-Specific Mappings
+```{r}
+ ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, group = drv))
+
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, colour = drv),
+    show.legend = FALSE,
+  )
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(colour = class)) + 
+  geom_smooth()
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(colour = class)) + 
+  geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE)
+
+
+#Code 1 — Global Mapping
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+#Code 2 — Local Mapping
+ggplot() + 
+  geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+
+
+
+```
+
+##Plotting Statistics
+###create the bar chart
+```{r}
+
+ggplot(data = diamonds) +
+  geom_bar(aes(x = cut))
+```
+
+### Use stat_count()
+```{r}
+ggplot(data = diamonds) +
+  stat_count(aes(x = cut)) #the same way
+```
+
+## Overriding ggplot2 Defaults
+```{r}
+demo <- tribble(
+  ~cut,         ~freq,
+  "Fair",       1610,
+  "Good",       4906,
+  "Very Good",  12082,
+  "Premium",    13791,
+  "Ideal",      21551
+)
+demo
+
+ggplot(data = demo) +
+  geom_bar(mapping = aes(x = cut, y = freq), stat = "identity")
+```
+
+##override a default mapping from transformed variables to aesthetics
+```{r}
+
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = stat(prop), group = 1))
+#> Warning: `stat(prop)` was deprecated in ggplot2 3.4.0.
+
+
+```
+
+##Plotting statistical details
+```{r}
+#using stat_summary().
+ggplot(data = diamonds) + 
+  stat_summary(
+    mapping = aes(x = cut, y = depth),
+    fun.min = min,
+    fun.max = max,
+    fun = median
+  )
+
+```
+
+##aethetic adjustment fill and color
+### Colour the Bar Outlines
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, colour = cut))
+```
+
+### Fill Bars by Cut
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut))
+```
+
+### Fill Bars by Clarity
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity))
+```
+
+## Position Adjustments
+###To alter transparency (alpha)
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) + 
+  geom_bar(alpha = 1/5, position = "identity")
+```
+
+
+###To color the bar outlines with no fill color
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, colour = clarity)) + 
+  geom_bar(fill = NA, position = "identity")
+```
+
+
+###Position = "fill" works like stacking, but scales each bar, so that all bars have the same total height (100%).
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "fill")
+```
+
+
+
+###position = "dodge" places overlapping objects directly beside one another.
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
+```
+
+
+###Position = "jitter" adds a small amount of random noise to each point to avoid overplotting when points overlap. This is useful for scatterplots but not barplots.
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), position = "jitter")
+```
+
+
